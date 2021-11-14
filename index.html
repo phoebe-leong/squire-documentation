@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Documentation - Squire</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <main>
+            <h1><a href="https://squire-lang.github.io">Squire</a> Documentation</h1><br>
+
+            <nav>
+                <h2>Contents</h2>
+                <ul>
+                    <li><a href="#basic-syntax">Basic Syntax</a></li><br>
+                    <li><a href="#books-codices">Books & Codices</a></li><br>
+                    <li><a href="#control-flow">Control Flow</a></li><br>
+                    <li><a href="#journeys">Journeys</a></li><br>
+                    <li><a href="#forms-imitations">Forms & Imitations</a></li><br>
+                    <li><a href="#macros">Macros</a></li><br>
+                    <li><a href="#miscellaneous">Miscellaneous</a></li> <!-- https://github.com/sampersand/squire/blob/master/overview/VI-builtins.sq -->
+                </ul>
+            </nav><br><br>
+
+            <section id="basic-syntax">
+                <h2><a href="#basic-syntax">Basic Syntax</a></h2>
+                <p>
+                    To print something to the console, use <code>proclaim()</code>:<br><br>
+                    <code>proclaim("Hello World!")</code><br><br><br>
+
+                    Numerals use the Roman way of counting: I, II, III, IV, etc.<br>
+                    To convert a Roman numeral to a more modern way of counting (often referred to as Arabic Numerals), use the <code>arabic()</code> function:<br><br>
+                    <code>arabic(I)</code><br><br><br>
+                    Conversely, one can convert a "modern" numeral to a Roman numeral by simply using the <code>roman()</code> function:<br><br>
+                    <code>roman(1)</code><br><br>
+
+                    Minus numbers are also supported, represented as follows: -II (-2).<br><br><br>
+                    In Squire, the term "Boolean" does not exist. Instead, "veracity" is part of the language.<br>
+                    "true" is "yea" and "false" is "nay".<br><br><br>
+
+                    Interpolation is done using curly brackets (only within strings) as follows:<br><br>
+                    <code>proclaim("yea == nay? {yea == nay}")</code><br><br><br>
+
+                    There are two sets of comment types: single-line and multi-line<br><br><br>
+                    Multi-line commenting is done using C-style comments as follows:<br><br>
+                    <code class="block">
+                        /* This is the start of the comment<br>
+                        This is the end of the comment */
+                    </code><br><br>
+
+                    Single-line commenting has two ways of being implemented:<br><br>
+                    <code class="block">
+                        # This is a single-line comment<br>
+                        N.B. But so is this!
+                    </code><br><br><br>
+
+                    Null is represented with "ni", as homage to the Knights Who Say "Ni".<br>
+                    Squire is dynamically-typed, meaning that no type has to specified when variables are created.<br>
+                    This means that a variable could be initiated as a string then transformed into an integer like so:<br><br>
+                    <code class="block">
+                        variable = "string"<br>
+                        variable = I
+                    </code><br><br><br>
+
+                    Like JavaScript, semicolons can be used to end lines, but is not required.<br>
+                    "\t", "\\", "\'", and "\"" are supported in regards to strings.<br><br><br>
+
+                    <code>@__END__</code> can be used to halt parsing of a file from that line forwards, and variables can be whatever you want:<br><br>
+                    <code class="block">
+                        foo_bar = I<br>
+                        proclaim(arabic(foo_bar + fooBar + foo bar)) # Prints 3
+                    </code><br><br><br>
+
+                    To differentiate between strings and variables within certain elements of Squire, Fraktur Unicode is used, which looks like this:<br>
+                    𝔰𝔮𝔲𝔦𝔯𝔢 𝔦𝔰 𝔠𝔬𝔬𝔩<br><br>
+
+                    The Squire compiler provides a shell script to convert from normal text to Fraktur Unicode.
+                </p>
+            </section><br><br>
+
+            <section id="books-codices">
+                <h2><a href="#books-codices">Books & Codices</a></h2>
+                <p>
+                    Books, Squire's version of arrays, use the familiar bracket syntax as follows:<br><br>
+                    <code>languages = [𝔖𝔮𝔲𝔦𝔯𝔢, ℜ𝔲𝔰𝔱, ℭ]</code><br><br><br>
+
+                    Please note that Squire is an I (or 1) indexed language, unlike most languages. Fraktur Unicode is also used to represent strings in books, as discussed in the previous section.<br><br>
+
+                    To get the length of a book, the function <code>.length</code> is used like so:<br><br>
+                    <code>proclaim(languages.length) # Prints III</code><br><br><br>
+
+                    Naturally, fetching of an element also uses brackets like so:<br><br>
+                    <code>C = languages[III] # The variable C now equals "C"</code><br><br><br>
+
+                    It is also possible to use negative numbers to find the last element like so:<br><br>
+                    <code class="block">
+                        C = languages[-I] # C still equals "C"<br>
+                        C = languages[-II] # C now equals "Rust"<br>
+                    </code><br><br><br>
+
+                    If an element is inserted into an index above the next sequential index, then the empty fields are filled with "ni":<br><br>
+                    <code class="block">
+                        languages[V] = 𝔎𝔫𝔦𝔤𝔥𝔱<br>
+                        proclaim(languages) # Index IV is nil
+                    </code><br><br><br>
+
+                    <code>insert()</code> and <code>delete()</code> can be used to add and delete indexes from books as follows:<br><br>
+                    <code class="block">
+                        insert(languages, I, "Quest") # The first index of the "languages" book now equals "Quest"<br>
+                        delete(languages, II) # "Rust" is now no longer in our book
+                    </code><br><br><br><br>
+
+                    Codices are Squire's dictionaries, maps, etc.<br>
+                    They store two values in one index, whatever you want to call them. They use curly bracket syntax:<br><br><br>
+
+                    <code>numbers = {𝔬𝔫𝔢: I, two: II, 𝔱𝔥𝔯𝔢𝔢: III}</code><br><br>
+                    Values can be updated like so:<br><br>
+                    <code>numbers[𝔱𝔥𝔯𝔢𝔢] = IV</code><br><br><br>
+
+                    Much like books, the length of a codice can be retrieved by using the <code>.length</code> function.<br><br><br>
+
+                    <code>delete()</code> can also be used with codices.
+                </p>
+            </section><br><br>
+
+            <section id="control-flow">
+                <h2><a href="#control-flow">Control Flow</a></h2>
+                <p>
+                    Squire has basic if statements, however "else" is switched out for "alas":<br><br>
+                    <code class="block">
+                        fav_colour = "black"<br>
+                        if fav_colour == "black" {<br>
+                        &emsp;proclaim("Me too :)")<br>
+                        } alas {<br>
+                        &emsp;proclaim("Why do you like {fav_colour}?'")<br>
+                        }
+                    </code><br><br><br>
+
+                    During full moons, if statements have a 1% chance to only execute their body if the condition passed is false.<br>
+                    This can be opted out of during compilation using the <code>-DSQ_NMOON_JOKE</code> flag.<br><br><br>
+
+                    Switch statements exist too, represented with <code>fork</code>s.<br><br>
+                    The syntax is as follows:<br><br>
+                    <code class="block">
+                        fork fav_colour {<br>
+                        &emsp;path "black":<br>
+                        &emsp;&emsp;proclaim("Me too :D")<br>
+                        &emsp;alas:<br>
+                        &emsp;&emsp;proclaim("Why do you like {fav_colour}?")<br>
+                        }
+                    </code><br><br><br>
+
+                    <code>alas</code> is used as the default case. It is optional.<br><br><br>
+
+                    <code>path</code>s can be expressions to shorten if statements like so:<br><br>
+
+                    <code class="block">
+                        fork yea {<br>
+                        &emsp;path fav_colour == "black":<br>
+                        &emsp;&emsp;proclaim("The colour of darkness...nice")<br>
+                        }
+                    </code><br><br><br>
+
+                    Squire does not have for loops, instead the have while (whilst) loops:<br><br>
+                    <code class="block">
+                        i = I<br>
+                        whilst i != V {<br>
+                        &emsp;i = i + I<br>
+                        }
+                    </code><br><br><br>
+
+                    Please note that Squire is still in development. Though for loops do not yet exist, that does not mean that they will never be added.<br><br><br>
+
+                    Thankfully, Squire supports basic error handling in it's current state, represented by <code>attempt</code> and <code>catapult</code>:<br><br><br>
+
+                    <code class="block">
+                        attempt {<br>
+                        &emsp;if i > V {<br>
+                        &emsp;&emsp;catapult("i is above 5")<br>
+                        &emsp;}<br>
+                        } alas err {<br>
+                        &emsp;proclaim(err)<br>
+                        }
+                    </code><br><br><br>
+
+                    Squire also supports something called <code>whence</code> commonly referred to as <code><a href="https://en.wikipedia.org/wiki/COMEFROM" target="_blank">COMEFROM</a></code> in other languages.<br>
+                    <code>whence</code> can be used to escape from nested loops like so:<br><br>
+                    <code class="block">
+                        i = I<br>
+                        whilst i < V {<br>
+                        &emsp;j = I<br>
+                        &emsp;whilst j < V {<br>
+                        &emsp;&emsp;if j == IV {<br>
+                        &emsp;&emsp;&emsp;out:<br>
+                        &emsp;&emsp;}<br>
+                        &emsp;}<br>
+                        }<br>
+                        whence out # If j equals IV, then the program will be moved to this line
+                    </code><br><br><br>
+                </p>
+            </section><br><br>
+
+            <section id="journeys">
+                <h2><a href="journeys">Journeys</a></h2>
+                <p>
+                    In place of functions, Squire has <code>journey</code>s:<br><br>
+                    <code class="block">
+                        journey hello(name) {<br>
+                        &emsp;proclaim("{name} says: \"Hello World!\"")<br>
+                        }
+                    </code><br><br><br>
+
+                    It is also possible to return values from functions using <code>reward</code>:<br><br><br>
+                    <code class="block">
+                        journey goodbye() {<br>
+                        &emsp;reward "Goodbye World!"<br>
+                        }<br>
+                        proclaim(goodbye()) # Goodbye World!
+                    </code><br><br><br>
+
+                    Implicit returns:<br><br>
+                    <code class="block">
+                        journey implicit() {<br>
+                        &emsp;II + I<br>
+                        }<br>
+                        proclaim(implicit()) # III
+                    </code><br><br><br><br>
+
+                    Squire also supports lambdas since it is a high level language:<br><br>
+                    <code class="block">
+                        numbers = [I, II, III]<br>
+                        journey func(book, lambda) {<br>
+                        &emsp;i = I<br>
+                        &emsp;whilst i <= book.length {<br>
+                        &emsp;&emsp;book[i] = lambda(book[i])<br>
+                        &emsp;&emsp;i = i + I<br>
+                        &emsp;}<br>
+                        &emsp;reward book<br>
+                        }<br>
+                        output = func(numbers, journey(x) { x + I }) # [II, III, IV]
+                    </code><br><br><br>
+
+                    All variables are locally scoped to the journey they're in.<br>
+                    However, if a global variable exists with the same name as that local variable then that global variable will be used.<br>
+                    Locality for variables can be forced using the <code>nigh</code> keyword. Likewise, globality can be forced using <code>renowned</code>:<br><br>
+                    <code class="block">
+                        renowned variable = I<br>
+                        journey function() {<br>
+                        &emsp;nigh variable = II<br>
+                        &emsp;reward variable + I<br>
+                        }<br>
+                        proclaim("global variable == {variable + I}") # Prints II<br>
+                        proclaim(local variable (going by the same name) == {function()}) # Prints III
+                    </code><br><br><br>
+
+                    All <code>journey</code>s are defined as global, however if you want to predefine a function you must mark it as <code>renowned</code> as follows:<br><br>
+                    <code class="block">
+                        renowned predefined<br>
+                        proclaim(predefine()) # Prints "This function was predefined!"<br>
+                        journey predefined() {<br>
+                        &emsp;reward "This function was predefined!"<br>
+                        }
+                    </code><br><br><br>
+                </p>
+            </section><br><br>
+
+            <section id="forms-imitations">
+                <h2><a href="forms-imitations">Forms & Imitations</a></h2>
+                <p>
+                    Classes in Squire are reffered to as <code>form</code>s and constructors for those classes are called <code>imitation</code>s:<br><br>
+                    <code class="block">
+                        form Person {<br>
+                        &emsp;matter name, hungry # Form-specific variables to define what fields imitations can have<br><br>
+
+                        &emsp;# "change" is the keyword used to define a class method/function<br>
+                        &emsp;change set_name(name) {<br>
+                        &emsp;&emsp;this.name = name # soul is Squire's version of 'this', used to reference the current object<br>
+                        &emsp;}<br><br>
+
+                        &emsp;imitate(name) { # Constructor<br>
+                        &emsp;&emsp;set_name(name)<br>
+                        &emsp;}<br>
+                        }<br><br>
+
+                        sam = Person(𝔖𝔞𝔪)
+                    </code><br><br><br>
+
+
+
+                    NOTE: Due to my lack of understanding of the concept <code>essence</code> in Squire, <code>essence</code> and <code>recall</code>s are not covered on this site.<br>
+                    However, I recommend that you read the <a href="https://github.com/sampersand/squire/blob/master/overview/VII-forms-and-imitations.sq" target="_blank">official documentation page</a> for this section to hopefully get a grasp of the concepts.<br>
+                    It would be greatly appreciated if you would add <code>essence</code>s and <code>recall</code>s to the <a href="https://github.com/phoebe-leong/squire-documentation/pulls" target="_blank">documentation</a> if you understand the two concepts.<br><br><br>
+                </p>
+            </section><br><br>
+
+            <section id="macros">
+                <h2><a href="macros">Macros</a></h2>
+                <p>
+                    All macro invocations start with <code>@</code> and end with a semicolon.<br><br>
+
+                    <code>@transcribe;</code> is used to import other files into the current one like so:<br><br>
+
+                    <code>@transcribe test.sq;</code><br><br><br>
+
+                    <code>@henceforth;</code> is used for text replacement at compile-time (similar to <code>#define</code> in C).<br>
+                    To escape semicolons in <code>@henceforth</code> you can use the <code><< ... >></code> construct which interprets its contents literally:<br><br>
+
+                    <code class="block">
+                        @henceforth $three =<br>
+                        &emsp;<<<br>
+                        &emsp;&emsp;&emsp;&emsp;proclaim(I);<br>
+                        &emsp;&emsp;&emsp;&emsp;proclaim(II);<br>
+                        &emsp;&emsp;&emsp;&emsp;proclaim(III);<br>
+                        &emsp;>>;<br><br>
+
+                        $three # I, II, III
+                    </code><br><br>
+
+                    Any variables associated with macros must be prefixed with <code>$</code>.<br><br>
+
+                    <code class="block">
+                        @henceforth $increment($number) = proclaim($number + I);<br>
+                        $increment(I) # II
+                    </code><br><br>
+
+                    There is a special macro variable worth mentioning called <code>$__COUNTER__</code> which increments every time it is used.<br><br>
+
+                    <code class="block">
+                        proclaim("$__COUNTER__ = {$__COUNTER__}"); # $__COUNTER__ = N<br>
+                        proclaim("$__COUNTER__ = {$__COUNTER__}"); # $__COUNTER__ = I<br>
+                        proclaim("$__COUNTER__ = {$__COUNTER__}"); # $__COUNTER__ = II<br>
+                    </code><br><br>
+
+                    <code><< ... >></code> can also be used to escape ','s:<br><br>
+
+                    <code class="block">
+                        @henceforth $execute($function, $argument) =<br>
+                        &emsp;proclaim($journey($arguments));<br><br>
+
+                        journey add(x, y) { reward x + y }<br>
+                        $execute(add, << I, II >>) # III
+                    </code><br><br><br>
+
+                    <code>@nevermore</code> simply undeclares a variable defined by <code>@henceforth</code>:<br><br>
+                    <code class="block">
+                        @henceforth $lol = I;<br>
+                        @nevermore $lol;<br><br>
+
+                        proclaim($lol) # Program will spit out an error - $lol is undefined
+                    </code><br><br>
+
+                    Conditional compilation! It exists in Squire!<br>
+                    It's nothing amazing though, just checking if a variable exists:<br><br>
+                    <code class="block">
+                        @henceforth $foo = I;<br><br>
+
+                        @whereupon $foo<br>
+                        &emsp;proclaim("Foo exists!")<br>
+                        @alas<br>
+                        &emsp;proclaim("Foo doesn't exist!")<br>
+                        @nowhere;<br>
+                        # Outputs "Foo exists!"
+                    </code><br><br><br>
+                </p>
+            </section><br><br>
+
+            <section id="miscellaneous">
+                <h2><a href="#miscellaneous">Miscellaneous</a></h2>
+                <p>
+                    This section is simply a list of built in functions found in <a href="https://github.com/sampersand/squire/blob/master/overview/VI-builtins.sq" target="_blank">builtins.sq</a> that haven't already been covered.<br><br><br>
+
+                    <ul>
+                        <li><code>tally()</code> - Convert a string to a numeral e.g., <code>tally("III") # III</code></li><br>
+                        <li><code>string()</code> - Convert a value to a string e.g., <code>string(II) # "II"</code></li><br>
+                        <li><code>boolean()</code> - Convert a string to a boolean e.g., <code>boolean("yea") # yea</code></li><br>
+                        <li><code>substr()</code> - Parse a string e.g., <code>substr("Hello", I, IV) # "Hell"</code></li><br>
+                        <li><code>dismount()</code> - Exit the program from anywhere in the code e.g., <code>dismount(0)</code></li>
+                    </ul><br><br>
+
+                        <p>One function, <code>genus()</code> is not covered here as I cannot find anywhere to explain it's function to me.<br>If you understand what it does please help out on the <a href="https://github.com/phoebe-leong/squire-documentation/pulls" target="_blank">repository</a>.</p><br><br>
+
+                    <ul>
+                        <li><code>hex()</code> - Execute command line functions e.g., <code>hex("echo Hello") # Hello</code></li><br>
+                        <li><code>inquire()</code> - Take input from the user via the command line e.g., <code>input = inquire()</code></li><br>
+                        <li><code>gamble()</code> - Generate a pseudo-random number e.g., <code>random_num = gamble()</code></li><br>
+                    </ul>
+                </p>
+            </section><br><br><br><br><br>
+
+            <footer><br>
+                <p>Written and interpreted by <a href="https://github.com/phoebe-leong" target="_blank">ph3b3</a></p>
+                <p><a href="https://github.com/sampersand/squire" blank="_blank">Squire</a> copyright &copy; Sam Westerman.</p>
+                <p>Sourced from <a href="https://github.com/sampersand/squire/blob/master/overview" target="_blank">the official documentation</a>.</p>
+            <br></footer>
+        </main>
+    </body>
+</html>

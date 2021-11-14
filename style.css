@@ -1,0 +1,80 @@
+@font-face {
+    font-family: "OldLondon";
+    src: url("fonts/OldLondon.ttf");
+}
+
+@font-face {
+    font-family: "Menlo";
+    src: url("fonts/Menlo-Regular.woff");
+}
+
+* {
+    color: rgb(53, 53, 53);
+    font-family: "Menlo";
+}
+
+section {
+    padding-right: 300px;
+}
+
+#docs {
+    padding-left: 100px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "OldLondon";
+}
+
+h1 {
+    font-size: 60px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 40px;
+    padding-left: 110px;
+}
+
+li a:hover, li a:focus, p a:hover, p a:focus {
+    text-decoration: none;
+}
+
+h2 a, h1 a {
+    font-family: 'OldLondon';
+    text-decoration: none;
+}
+
+h2 a:hover, h2 a:focus, h1 a:hover, h1 a:focus {
+    text-decoration: line-through;
+}
+
+p {
+    padding-left: 110px;
+}
+
+ul {
+    padding-left: 150px;
+}
+
+code {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+
+    border-radius: 5px;
+    background-color: rgb(53, 53, 53);
+    color: white;
+}
+.block {
+    display: block;
+
+    padding-left: 20px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+footer {
+    text-align: center;
+    border-top: 2px solid rgb(53, 53, 53)
+}
